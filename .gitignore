@@ -57,3 +57,8 @@ metro-*.log
 # Database & Scratch
 backend/data/
 original_prompt.txt
+node_modules/
+.expo/
+dist/
+.env
+*.log
