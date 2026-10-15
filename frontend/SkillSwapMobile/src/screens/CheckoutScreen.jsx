@@ -38,6 +38,7 @@ export const CheckoutScreen = ({
   const [discount, setDiscount] = useState(0);
   const [promoMessage, setPromoMessage] = useState('');
   const [isPromoApplied, setIsPromoApplied] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState('UPI');
   const [loading, setLoading] = useState(false);
   const [confirmed, setConfirmed] = useState(false);
 
@@ -63,24 +64,49 @@ export const CheckoutScreen = ({
     }
   };
 
-  const handleConfirmAndPay = async () => {
-    setLoading(true);
-    try {
-      await bookingApi.createBooking(gigId, user?._id || user?.id || 'u_default');
-      setConfirmed(true);
-      setTimeout(() => {
-        navigation.navigate('MyGigs');
-      }, 1500);
-    } catch {
-      // Academic simulated success fallback
-      setConfirmed(true);
-      setTimeout(() => {
-        navigation.navigate('MyGigs');
-      }, 1500);
-    } finally {
-      setLoading(false);
-    }
+  const handleConfirmAndPay = () => {
+    import('react-native').then(({ Alert }) => {
+      let message = '';
+      if (paymentMethod === 'UPI') message = 'Opening UPI App...';
+      else if (paymentMethod === 'CARD') message = 'Redirecting to Card Gateway...';
+      else message = 'Deducting from Wallet...';
+
+      Alert.alert(
+        'Processing Payment',
+        message,
+        [
+          {
+            text: 'Cancel',
+            style: 'cancel',
+          },
+          {
+            text: 'Simulate Success',
+            onPress: async () => {
+              setLoading(true);
+              try {
+                await bookingApi.createBooking(gigId, user?._id || user?.id || 'u_default');
+                setConfirmed(true);
+              } catch {
+                setConfirmed(true);
+              } finally {
+                setLoading(false);
+              }
+            },
+          },
+        ]
+      );
+    });
   };
+
+  React.useEffect(() => {
+    let timer;
+    if (confirmed) {
+      timer = setTimeout(() => {
+        navigation.navigate('HomeTab');
+      }, 5000);
+    }
+    return () => clearTimeout(timer);
+  }, [confirmed, navigation]);
 
   if (confirmed) {
     return (
@@ -95,8 +121,14 @@ export const CheckoutScreen = ({
             Your order for "{gig.title}" has been placed with {gig.owner?.name}.
           </Text>
           <Text style={styles.successRedirect}>
-            Redirecting to My Gigs active bookings...
+            Redirecting to homepage...
           </Text>
+          
+          <PrimaryButton 
+            title="Continue" 
+            onPress={() => navigation.navigate('HomeTab')}
+            style={{ marginTop: 24, width: '100%' }}
+          />
         </View>
       </SafeAreaView>);
 
@@ -168,6 +200,35 @@ export const CheckoutScreen = ({
                 {promoMessage}
               </Text>
             }
+          </View>
+
+          {/* Payment Method Section */}
+          <View style={styles.card}>
+            <Text style={styles.cardSectionTitle}>Payment Method</Text>
+            
+            <TouchableOpacity 
+              style={[styles.paymentMethodBtn, paymentMethod === 'UPI' && styles.paymentMethodSelected]}
+              onPress={() => setPaymentMethod('UPI')}
+            >
+              <Text style={styles.paymentMethodText}>UPI / BHIM</Text>
+              {paymentMethod === 'UPI' && <Text style={styles.paymentMethodCheck}>✓</Text>}
+            </TouchableOpacity>
+
+            <TouchableOpacity 
+              style={[styles.paymentMethodBtn, paymentMethod === 'CARD' && styles.paymentMethodSelected]}
+              onPress={() => setPaymentMethod('CARD')}
+            >
+              <Text style={styles.paymentMethodText}>Credit / Debit Card</Text>
+              {paymentMethod === 'CARD' && <Text style={styles.paymentMethodCheck}>✓</Text>}
+            </TouchableOpacity>
+
+            <TouchableOpacity 
+              style={[styles.paymentMethodBtn, paymentMethod === 'WALLET' && styles.paymentMethodSelected]}
+              onPress={() => setPaymentMethod('WALLET')}
+            >
+              <Text style={styles.paymentMethodText}>Campus Wallet (Balance: ₹1500)</Text>
+              {paymentMethod === 'WALLET' && <Text style={styles.paymentMethodCheck}>✓</Text>}
+            </TouchableOpacity>
           </View>
 
           {/* Cost Breakdown Card */}
@@ -424,6 +485,30 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: theme.colors.primary,
     fontWeight: '600'
+  },
+  paymentMethodBtn: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 14,
+    borderWidth: 1,
+    borderColor: theme.colors.border,
+    borderRadius: theme.radius.md,
+    marginBottom: 8,
+    backgroundColor: '#FAFAFA'
+  },
+  paymentMethodSelected: {
+    borderColor: theme.colors.primary,
+    backgroundColor: '#EEF2FF'
+  },
+  paymentMethodText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: theme.colors.text
+  },
+  paymentMethodCheck: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: theme.colors.primary
   }
 });
 

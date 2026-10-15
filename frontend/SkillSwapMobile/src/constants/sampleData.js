@@ -215,4 +215,56 @@ export const SAMPLE_GIGS = [
   rating: 4.8,
   reviewsCount: 19,
   status: 'available'
+},
+{
+  id: 'g7',
+  title: 'Full-Stack Web App Mentorship',
+  category: 'Web Development',
+  description: 'Learn React, Node.js, and MongoDB in this intensive 4-week mentorship program. I will guide you through building a real-world app.',
+  price: 3000,
+  deliveryTime: '4 Weeks',
+  features: ['Live coding sessions', 'Code reviews', 'Project planning', 'Deployment guidance'],
+  owner: FREELANCERS[0],
+  rating: 5.0,
+  reviewsCount: 12,
+  status: 'available'
+},
+{
+  id: 'g8',
+  title: 'Creative Campus Photography',
+  category: 'Photography',
+  description: 'Professional photography for campus events, student profiles, and club activities. High-quality edits included.',
+  price: 1500,
+  deliveryTime: '3 Days',
+  features: ['2-hour shoot', '50 edited photos', 'High-resolution digital delivery'],
+  owner: FREELANCERS[2],
+  rating: 4.6,
+  reviewsCount: 8,
+  status: 'available'
+},
+{
+  id: 'g9',
+  title: 'Custom UI/UX App Design (Figma)',
+  category: 'Graphic Design',
+  description: 'I will design a sleek, modern, and user-friendly mobile app interface tailored to your specific requirements.',
+  price: 2500,
+  deliveryTime: '5 Days',
+  features: ['Wireframing', 'Prototyping', 'User flow design', 'Source file (Figma)'],
+  owner: FREELANCERS[1],
+  rating: 4.9,
+  reviewsCount: 25,
+  status: 'available'
+},
+{
+  id: 'g10',
+  title: 'SEO Optimized Blog Posts for Tech Clubs',
+  category: 'Content Writing',
+  description: 'Engaging, technical blog posts to help your campus tech club reach a wider audience. Topics include web dev, AI, and cybersecurity.',
+  price: 500,
+  deliveryTime: '2 Days',
+  features: ['500-800 words', 'SEO optimization', 'Plagiarism-free', '1 revision'],
+  owner: FREELANCERS[1],
+  rating: 4.5,
+  reviewsCount: 11,
+  status: 'available'
 }];

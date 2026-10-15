@@ -21,7 +21,7 @@ import {
 '../utils/validators';
 import { useSkillSwap } from '../context/SkillSwapContext';
 import authApi from '../services/authApi';
-
+import { Picker } from '@react-native-picker/picker';
 
 
 
@@ -146,15 +146,28 @@ export const RegisterScreen = ({ navigation }) => {
               autoCorrect={false} />
             
 
-            <InputField
-              label="Department / Course"
-              placeholder="e.g. MCA Computer Science / B.Tech"
-              value={department}
-              onChangeText={(text) => {
-                setDepartment(text);
-                if (errors.department) setErrors({ ...errors, department: undefined });
-              }}
-              error={errors.department} />
+            <View style={styles.pickerContainer}>
+              <Text style={styles.pickerLabel}>Department / Course</Text>
+              <View style={[styles.pickerWrapper, errors.department && styles.pickerError]}>
+                <Picker
+                  selectedValue={department}
+                  onValueChange={(itemValue) => {
+                    setDepartment(itemValue);
+                    if (errors.department) setErrors({ ...errors, department: undefined });
+                  }}
+                  style={styles.picker}
+                >
+                  <Picker.Item label="Select Department" value="" color={theme.colors.mutedText} />
+                  <Picker.Item label="Computer Science" value="Computer Science" />
+                  <Picker.Item label="Information Technology" value="Information Technology" />
+                  <Picker.Item label="Business Administration" value="Business Administration" />
+                  <Picker.Item label="Engineering" value="Engineering" />
+                  <Picker.Item label="Design & Arts" value="Design & Arts" />
+                  <Picker.Item label="Other" value="Other" />
+                </Picker>
+              </View>
+              {errors.department && <Text style={styles.errorText}>{errors.department}</Text>}
+            </View>
             
 
             <InputField
@@ -276,6 +289,34 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '700',
     color: theme.colors.primary
+  },
+  pickerContainer: {
+    marginBottom: 16,
+  },
+  pickerLabel: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: theme.colors.text,
+    marginBottom: 8,
+  },
+  pickerWrapper: {
+    borderWidth: 1,
+    borderColor: theme.colors.border,
+    borderRadius: theme.radius.md,
+    backgroundColor: '#F9FAFB',
+    overflow: 'hidden',
+  },
+  pickerError: {
+    borderColor: theme.colors.error,
+  },
+  picker: {
+    height: 50,
+    width: '100%',
+  },
+  errorText: {
+    color: theme.colors.error,
+    fontSize: 12,
+    marginTop: 4,
   }
 });
 

@@ -190,7 +190,7 @@ export const MyGigsScreen = ({ navigation }) => {
           'Completed gigs will show here once deliverables are accepted.'
           }
           actionText="Browse Campus Marketplace"
-          onActionPress={() => navigation.navigate('Home')} /> :
+          onActionPress={() => navigation.navigate('HomeTab')} /> :
 
 
         filteredBookings.map((booking) => {
@@ -221,7 +221,7 @@ export const MyGigsScreen = ({ navigation }) => {
                   style={styles.detailsBtn}
                   onPress={() => {
                     if (booking.gig) {
-                      navigation.navigate('Home', {
+                      navigation.navigate('HomeTab', {
                         screen: 'GigDetails',
                         params: { gigId: booking.gig.id || booking.gig._id }
                       });

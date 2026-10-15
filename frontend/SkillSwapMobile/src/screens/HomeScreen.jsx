@@ -70,7 +70,8 @@ export const HomeScreen = ({ navigation }) => {
       searchQuery.trim().length === 0 ||
       gig.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       gig.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      gig.category.toLowerCase().includes(searchQuery.toLowerCase());
+      gig.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      gig.owner?.name?.toLowerCase().includes(searchQuery.toLowerCase());
 
       const matchesCat =
       selectedCategory === 'All' ||
@@ -195,8 +196,8 @@ export const HomeScreen = ({ navigation }) => {
         {/* Recommended Campus Freelancers */}
         <SectionHeader
           title="Campus Talent"
-          actionText="See all"
-          onActionPress={() => {}} />
+          actionText="See Gigs"
+          onActionPress={() => setSelectedCategory('All')} />
         
         <ScrollView
           horizontal
@@ -206,7 +207,7 @@ export const HomeScreen = ({ navigation }) => {
           <FreelancerCard
             key={freelancer.id}
             freelancer={freelancer}
-            onPress={() => {}} />
+            onPress={() => setSearchQuery(freelancer.name)} />
 
           )}
         </ScrollView>
@@ -218,8 +219,8 @@ export const HomeScreen = ({ navigation }) => {
           'Available Peer Gigs' :
           `${selectedCategory} Gigs`
           }
-          actionText="Refresh"
-          onActionPress={() => fetchGigs(true)} />
+          actionText="See all"
+          onActionPress={() => setSelectedCategory('All')} />
         
 
         {loading && !refreshing ?

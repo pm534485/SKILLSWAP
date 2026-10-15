@@ -74,7 +74,7 @@ export const PostGigScreen = ({ navigation }) => {
         setTitle('');
         setDescription('');
         setPrice('');
-        navigation.navigate('Home');
+        navigation.navigate('HomeTab');
       }, 1500);
     } catch {
       // Offline fallback success for demo
@@ -84,7 +84,7 @@ export const PostGigScreen = ({ navigation }) => {
         setTitle('');
         setDescription('');
         setPrice('');
-        navigation.navigate('Home');
+        navigation.navigate('HomeTab');
       }, 1500);
     } finally {
       setLoading(false);

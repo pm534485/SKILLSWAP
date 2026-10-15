@@ -22,7 +22,7 @@ export const LogoutScreen = ({ navigation }) => {
     await logout();
     navigation.reset({
       index: 0,
-      routes: [{ name: 'Auth', state: { routes: [{ name: 'Welcome' }] } }]
+      routes: [{ name: 'Welcome' }]
     });
   };
 
